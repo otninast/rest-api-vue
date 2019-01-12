@@ -77,7 +77,8 @@ export default {
 
     getUser: function () {
       axios
-        .get('http://127.0.0.1:8000/login_user/')
+        // .get('http://127.0.0.1:8000/login_user/')
+        .get(process.env.VUE_APP_API_URL_BASE+'/login_user/')
         .then(response => {
           this.$store.commit('setUser', response.data.data.user)
           if (response.data.data.profile) {
@@ -89,7 +90,8 @@ export default {
 
     login: function() {
       axios
-        .post('http://127.0.0.1:8000/auth/', this.data)
+        // .post('http://127.0.0.1:8000/auth/', this.data)
+        .post(process.env.VUE_APP_API_URL_BASE+'/auth/', this.data)
         .then(response => {
           localStorage.setItem('token', 'JWT '+response.data.token),
           axios.defaults.headers.common['Authorization'] = localStorage.token

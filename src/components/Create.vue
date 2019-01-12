@@ -73,7 +73,8 @@ export default {
   methods: {
     create: function() {
       axios
-        .post('http://127.0.0.1:8000/users/', this.data)
+        // .post('http://127.0.0.1:8000/users/', this.data)
+        .post(process.env.VUE_APP_API_URL_BASE+'/users/', this.data)
         .then(response => (this.info = response))
         .then(this.$router.push('/login'))
         .catch(response => {

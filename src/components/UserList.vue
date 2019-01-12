@@ -79,7 +79,7 @@ export default {
   props: ['userlist', 'errors'],
   data() {
     return {
-      url: 'http://127.0.0.1:8000/users/'
+      url: process.env.VUE_APP_API_URL_BASE + '/users/'
     }
   },
   methods: {

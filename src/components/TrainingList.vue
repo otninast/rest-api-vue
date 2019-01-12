@@ -136,7 +136,8 @@ export default {
   props: ['items', 'info', 'tmp', 'error'],
   data() {
     return {
-      url: 'http://127.0.0.1:8000/training_program/',
+      // url: 'http://127.0.0.1:8000/training_program/',
+      url: process.env.VUE_APP_API_URL_BASE + '/training_program/',
       // storage: localStorage,
       number: null,
     }

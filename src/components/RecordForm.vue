@@ -65,7 +65,7 @@ export default {
     return {
       AuthorsName: '',
       info: '',
-      url: 'http://127.0.0.1:8000/authors/',
+      url: process.env.VUE_APP_API_URL_BASE + 'authors/',
       AuthorsId: '',
       counter: 1,
       inputs: [{
@@ -78,7 +78,7 @@ export default {
   methods: {
     postAuthor: function() {
       axios
-        .post('http://127.0.0.1:8000/authors/', {
+        .post(process.env.VUE_APP_API_URL_BASE + 'authors/', {
           name: this.AuthorsName
         })
         .then(response => (this.info = response))

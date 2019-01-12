@@ -112,7 +112,7 @@ export default {
       // info: null,
       uploadFile: null,
       yourFileKey: 'image_key',
-      yourUploadUrl: 'http://127.0.0.1:8000/test_func/',
+      yourUploadUrl: process.env.VUE_APP_API_URL_BASE+'/test_func/',
 
       title: "Image Upload",
       dialog: false,

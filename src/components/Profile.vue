@@ -177,7 +177,7 @@ export default {
   props: ['info', 'error'],
   data() {
     return {
-      profileUrl: 'http://127.0.0.1:8000/profile/',
+      profileUrl: process.env.VUE_APP_API_URL_BASE + '/profile/',
       profile: null,
       errors: null,
       is_edit: true,

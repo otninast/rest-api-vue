@@ -322,9 +322,9 @@ export default {
       isLapTime: false,
       hidden: true,
 
-      urlTrainingProgram: 'http://127.0.0.1:8000/training_program/',
-      urlMenuName: 'http://127.0.0.1:8000/menu_name/',
-      url: 'http://127.0.0.1:8000/datainput/',
+      urlTrainingProgram: process.env.VUE_APP_API_URL_BASE + '/training_program/',
+      urlMenuName: process.env.VUE_APP_API_URL_BASE + '/menu_name/',
+      url: process.env.VUE_APP_API_URL_BASE + '/datainput/',
       MenuName: null,
       errors: null,
       val: "00:00:00",

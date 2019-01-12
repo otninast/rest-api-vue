@@ -170,7 +170,7 @@ export default {
   props: ['detailData'],
   data() {
     return {
-      url: `http://127.0.0.1:8000/training_program/${this.$route.params.id}/`,
+      url: `${process.env.VUE_APP_API_URL_BASE}/training_program/${this.$route.params.id}/`,
       errors: null,
       // detailData: null,
 
