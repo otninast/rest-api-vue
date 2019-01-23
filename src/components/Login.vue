@@ -3,7 +3,7 @@
 
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
-      <v-flex xs12 sm8 md4>
+      <v-flex xs12 sm8 md6>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
             <v-toolbar-title>Login form</v-toolbar-title>
@@ -12,11 +12,8 @@
 
 
           <v-card-text>
-            <v-alert type="error">
-              <div v-for="error in errors" :key="error.id">{{ error }}</div>
-              <div v-for="error in non_field_errors" :key="error.id">{{ error }}</div>
-              <!-- <div>{{errors}}</div>
-              <div>{{non_field_errors}}</div> -->
+            <v-alert v-if="non_field_errors" :value="true" type="error">
+              {{non_field_errors[0]}}
             </v-alert>
             <v-form>
               <v-text-field
@@ -42,12 +39,16 @@
 
 
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="login" color="primary">Login</v-btn>
-            <v-btn to="/create" color="success">Create</v-btn>
+            <v-layout>
+              <v-flex>
+                <v-btn @click="login" color="primary">Login</v-btn>
+                <v-btn to="/create" color="success">Create</v-btn>
+              </v-flex>
+              <v-flex>
+                <v-btn @click="loginAsGuest" color="orange" outline>Guest User</v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-actions>
-
-
 
         </v-card>
       </v-flex>
@@ -77,7 +78,6 @@ export default {
 
     getUser: function () {
       axios
-        // .get('http://127.0.0.1:8000/login_user/')
         .get(process.env.VUE_APP_API_URL_BASE+'/login_user/')
         .then(response => {
           this.$store.commit('setUser', response.data.data.user)
@@ -90,7 +90,6 @@ export default {
 
     login: function() {
       axios
-        // .post('http://127.0.0.1:8000/auth/', this.data)
         .post(process.env.VUE_APP_API_URL_BASE+'/auth/', this.data)
         .then(response => {
           localStorage.setItem('token', 'JWT '+response.data.token),
@@ -105,6 +104,28 @@ export default {
           this.non_field_errors = response.response.data.non_field_errors
         })
     },
+
+    loginAsGuest: function() {
+      axios
+        .post(process.env.VUE_APP_API_URL_BASE+'/auth/',
+          {
+            'username': process.env.VUE_APP_API_USER_ID,
+            'password': process.env.VUE_APP_API_USER_PASS
+          })
+        .then(response => {
+          localStorage.setItem('token', 'JWT '+response.data.token),
+          axios.defaults.headers.common['Authorization'] = localStorage.token
+        })
+        .then(() => {
+          this.getUser()
+          this.$router.push('/')
+        })
+        .catch(response => {
+          this.errors = response.response.data
+          this.non_field_errors = response.response.data.non_field_errors
+        })
+    },
+
   }
 }
 </script>

@@ -6,11 +6,13 @@
     <v-alert type="error">
       <p>{{error}}</p>
     </v-alert>
+    <v-alert type="success">
+      <p>{{message}}</p>
+    </v-alert>
 
     <v-card>
       <v-card-title primary-title class="indigo white--text">
         <v-layout justify-center>
-          <!-- <h1>{{profile.user.username}}'s Profile</h1> -->
           <h1>{{$store.state.user.username}}'s Profile</h1>
         </v-layout>
       </v-card-title>
@@ -77,7 +79,7 @@
               </v-dialog>
               <v-layout justify-center>
                 <v-avatar size="120" color="green">
-                  <img :src="profile.profile_image">
+                  <img :src="profile.profile_image" v-if="profile.profile_image">
                 </v-avatar>
               </v-layout>
             </v-layout>
@@ -106,10 +108,36 @@
           <v-flex xs3>
             <v-subheader>Birthday : </v-subheader>
           </v-flex>
-          <v-flex xs3>
+          <!-- <v-flex xs3>
             <v-text-field v-model="profile.birthday" :readonly="is_edit">
             </v-text-field>
-          </v-flex>
+          </v-flex> -->
+          <v-flex xs3 sm3 md3 :readonly="is_edit">
+            <v-menu
+              :close-on-content-click="false"
+              v-model="menu"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+              :readonly="is_edit"
+              >
+              <v-text-field
+                slot="activator"
+                v-model="profile.birthday"
+                label="Picker without buttons"
+                prepend-icon="event"
+                :readonly="is_edit"
+              ></v-text-field>
+              <v-date-picker
+                v-model="profile.birthday"
+                @input="menu = false"
+                :readonly="is_edit"
+              ></v-date-picker>
+            </v-menu>
+              </v-flex>
         </v-layout>
 
         <v-layout row justify-center>
@@ -143,11 +171,28 @@
       <v-card-actions>
         <v-layout row align-center justify-center>
           <v-flex xs2>
-            <v-btn v-if="profile.id" @click="updateProfile()" :disabled="is_edit" large color="orange">update profile</v-btn>
-            <v-btn v-else @click="createProfile()" :disabled="is_edit" large color="orange">create profile</v-btn>
+            <v-btn @click="updateProfile()" :disabled="is_edit" large color="orange">update profile</v-btn>
+            <!-- <v-btn v-else @click="createProfile()" :disabled="is_edit" large color="orange">create profile</v-btn> -->
           </v-flex>
-          <v-flex xs2>
-            <v-btn @click="is_edit = !is_edit" outline fab color="indigo">
+          <v-flex
+          xs2
+          >
+            <v-btn
+            @click="is_edit = !is_edit"
+            outline
+            fab
+            color="indigo"
+            v-if="$store.state.user.username !== 'Guest'"
+            >
+              <v-icon>edit</v-icon>
+            </v-btn>
+            <v-btn
+            :disabled="is_edit"
+            outline
+            fab
+            color="indigo"
+            v-else
+            >
               <v-icon>edit</v-icon>
             </v-btn>
           </v-flex>
@@ -174,7 +219,7 @@ import axios from 'axios'
 
 export default {
   name: 'Profile',
-  props: ['info', 'error'],
+  props: ['info', 'error', 'message'],
   data() {
     return {
       profileUrl: process.env.VUE_APP_API_URL_BASE + '/profile/',
@@ -182,6 +227,7 @@ export default {
       errors: null,
       is_edit: true,
       dialog: false,
+      menu: null,
     }
   },
   methods: {
@@ -206,19 +252,20 @@ export default {
         .then(response => {
           this.info = response
           this.is_edit = true
+          this.message = 'Update Success!'
         })
         .catch(error => (this.error = error))
     },
-    createProfile: function() {
-      let url = this.profileUrl
-      axios
-        .post(url, this.profile)
-        .then(response => {
-          this.info = response
-          this.is_edit = true
-        })
-        .catch(error => (this.error = error))
-    },
+    // createProfile: function() {
+    //   let url = this.profileUrl
+    //   axios
+    //     .post(url, this.profile)
+    //     .then(response => {
+    //       this.info = response
+    //       this.is_edit = true
+    //     })
+    //     .catch(error => (this.error = error))
+    // },
     setValueForArg: function(value) {
       this.profile.profile_image = value
     },

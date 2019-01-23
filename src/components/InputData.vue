@@ -1,75 +1,71 @@
 <template>
 <v-container>
 
-
-  <div v-if="errors">
-    <v-alert :value="true" type="error">
-
-      <div>{{ errors.data.status }}</div>
-
-      <div v-for="(message, key) in errors.data.status_message" :key="message.id">
-        {{key}} : {{message}}
-      </div>
+    <v-alert v-if="postErrors" :value="postErrors" type="error">
+      <h3>Server Error!</h3>
+      <h3>Please send again later. </h3>
+      <div>{{postErrors.response.data.status}}</div>
+      <div>{{postErrors.response.data.status_message}}</div>
     </v-alert>
-  </div>
 
   <v-card id="trainingData">
     <v-card-title primary-title=true class="teal lighten-3">
-      <h3>Input Form</h3>
+      <h3>Training Date</h3>
     </v-card-title>
-
     <v-card-text>
       <v-form>
-
-        <v-layout row>
-          <v-flex xs6>
-          <v-subheader>Training Date : </v-subheader>
-        </v-flex>
-
-        <v-flex xs6 sm6 md4>
-              <v-menu
-                :close-on-content-click="false"
-                v-model="menu2"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <v-text-field
-                  slot="activator"
-                  v-model="trainingData.training_date"
-                  label="Picker without buttons"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
-                <v-date-picker v-model="trainingData.training_date" @input="menu2 = false"></v-date-picker>
-              </v-menu>
-            </v-flex>
-
+        <v-layout row align-center my-2>
+          <v-flex>
+            <v-subheader>Date : </v-subheader>
+          </v-flex>
+          <v-flex>
+            <v-menu
+              :close-on-content-click="false"
+              v-model="menu2"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+              <v-text-field
+                slot="activator"
+                v-model="trainingData.training_date"
+                prepend-icon="event"
+                readonly>
+              </v-text-field>
+              <v-date-picker
+                v-model="trainingData.training_date"
+                @input="menu2 = false">
+              </v-date-picker>
+            </v-menu>
+          </v-flex>
+        </v-layout>
+          <v-layout>
+            <v-textarea
+            v-model="trainingData.daily_reflection"
+            placeholder="Please fill in what you thought, such as practice impressions and reflection points."
+            outline>
+          </v-textarea>
           </v-layout>
 
-        <v-textarea
-        v-model="trainingData.daily_reflection"
-        label="Outline textarea"
-        value=""
-        :rules="[v => !!v || 'Reflection is required']"
-        outline
-        ></v-textarea>
-
-        <v-layout row>
-          <v-subheader>Score : </v-subheader>
-        <v-rating
-          v-model="trainingData.self_assessment_score"
-          color="yellow darken-3"
-          background-color="grey darken-1"
-          empty-icon="$vuetify.icons.ratingFull"
-          half-increments
-          hover
-          :rules="[v => !!v || 'Score is required']"
-        ></v-rating>
-      </v-layout>
+        <v-layout row align-center my-2>
+          <v-flex>
+            <v-subheader>Score : </v-subheader>
+          </v-flex>
+          <v-flex>
+            <v-rating
+              v-model="trainingData.self_assessment_score"
+              color="yellow darken-3"
+              background-color="grey darken-1"
+              empty-icon="$vuetify.icons.ratingFull"
+              half-increments
+              hover
+              :rules="[v => !!v || 'Score is required']">
+            </v-rating>
+          </v-flex>
+          </v-layout>
 
       <v-layout column>
       <v-dialog v-model="dialog" persistent max-width="600px">
@@ -118,7 +114,6 @@
   </v-card>
 
 
-
   <v-divider></v-divider>
   <v-divider></v-divider>
   <v-divider></v-divider>
@@ -135,39 +130,35 @@
       <v-form>
         <v-layout column justify-center>
 
-          <v-layout row>
-            <v-flex xs4>
-              <v-subheader>Menu Name : </v-subheader>
-            </v-flex>
             <v-flex xs6>
-              <v-select v-model="menuData.menu_name" :items="MenuName" label="Select" prepend-icon="fitness_center"></v-select>
+              <v-select
+                v-model="menuData.menu_name"
+                :items="MenuName"
+                label="Menu Name"
+                prepend-icon="fitness_center"
+              ></v-select>
             </v-flex>
-          </v-layout>
 
-          <v-layout row>
-            <v-flex xs4>
-              <v-subheader>Style : </v-subheader>
-            </v-flex>
             <v-flex xs6>
-              <v-select v-model="menuData.style" :items="['Fr', 'Ba', 'Br', 'Fly', 'IM']" label="Select" prepend-icon="pool"></v-select>
+              <v-select
+                v-model="menuData.style"
+                :items="['Fr', 'Ba', 'Br', 'Fly', 'IM']"
+                label="Style"
+                prepend-icon="pool"
+              ></v-select>
             </v-flex>
-          </v-layout>
 
-          <v-layout row>
-            <v-flex xs4>
-              <v-subheader>Distance : </v-subheader>
-            </v-flex>
             <v-flex xs6>
-              <v-select v-model="menuData.distance" :items="[50, 100, 200, 400, 800]" label="Select" prepend-icon="arrow_upward"></v-select>
+              <v-select
+                v-model="menuData.distance"
+                :items="[50, 100, 200, 400, 800]"
+                label="Distance"
+                prepend-icon="arrow_upward"
+              ></v-select>
             </v-flex>
-          </v-layout>
 
-          <v-layout row>
-            <v-flex xs4>
-              <v-subheader>How many times? : </v-subheader>
-            </v-flex>
-            <v-flex xs6>
-              <!-- <v-select v-model="menuData.how_many_times" :items="[1, 2, 3, 4, 5]" label="Select" prepend-icon="360"></v-select> -->
+          <v-layout column justify-center my-5>
+            <v-flex>
               <v-slider
                 v-model="menuData.how_many_times"
                 step="1"
@@ -175,25 +166,41 @@
                 :max="30"
                 thumb-label
                 ticks
-                label="Select"
+                label="How many"
                 prepend-icon="360"
               ></v-slider>
             </v-flex>
-            <v-flex shrink style="width: 80px" ml-3>
-              <v-text-field v-model="menuData.how_many_times" type="number" suffix="" class="mt-0" hide-details single-line>
+            <v-flex shrink style="width: 100px">
+              <v-text-field
+                v-model="menuData.how_many_times"
+                type="number"
+                suffix="times"
+                class="mt-0"
+                hide-details
+                single-line
+                box>
               </v-text-field>
             </v-flex>
-          </v-layout>
 
-          <v-layout row>
-            <v-flex xs4>
-              <v-subheader>Circle Time : </v-subheader>
+            <v-flex>
+              <v-slider
+                v-model="menuData.time_circle"
+                :min="30"
+                :max="180"
+                :step="5"
+                label="Circle Time"
+                prepend-icon="timer"
+              ></v-slider>
             </v-flex>
-            <v-flex xs6>
-              <v-slider v-model="menuData.time_circle" :min="30" :max="180" :step="5" label="time circle" prepend-icon="timer"></v-slider>
-            </v-flex>
-            <v-flex shrink style="width: 80px" ml-3>
-              <v-text-field v-model="menuData.time_circle" type="number" suffix="sec" class="mt-0" hide-details single-line>
+            <v-flex shrink style="width: 100px">
+              <v-text-field
+                v-model="menuData.time_circle"
+                type="number"
+                suffix="sec"
+                class="mt-0"
+                hide-details
+                single-line
+                box>
               </v-text-field>
             </v-flex>
           </v-layout>
@@ -213,87 +220,84 @@
 
 
   <v-card id="resultTime">
-
     <v-card-title primary-title=true class="teal lighten-5">
       <h3>Result Time Form</h3>
     </v-card-title>
-
     <v-card-text>
-<v-layout justify-center column>
-          <v-form>
+      <v-layout justify-center column>
+        <v-form>
+          <v-layout column justify-center align-center>
+            <v-btn @click="continueAddInput">Continue Add Input</v-btn>
+            <v-switch
+               :label="`Lap Time: ${isLapTime.toString()}`"
+               v-model="isLapTime"
+             ></v-switch>
+           </v-layout>
+          <div v-for="input in resultTime" :key="input.id" :hidden="hidden">
+            <v-layout row justify-center>
 
-            <v-layout column justify-center align-center>
-              <v-btn @click="continueAddInput">Continue Add Input</v-btn>
-              <v-switch
-                 :label="`Lap Time: ${isLapTime.toString()}`"
-                 v-model="isLapTime"
-               ></v-switch>
-
-             </v-layout>
-
-
-            <div v-for="input in resultTime" :key="input.id" :hidden="hidden">
-              <v-layout row>
-                <v-flex>
-                  <v-subheader> Number.{{input.num_of_order}} : </v-subheader>
-                </v-flex>
-                <v-flex>
-                  <v-text-field
+              <v-flex md8>
+                <v-text-field
                   :id="input.id"
+                  :name="`Number${input.num_of_order}`"
                   v-model="input.result_time_str"
                   v-bind:label="'Number' + input.num_of_order"
                   mask="time-with-seconds"
-                  messages="##:##:##"
+                  placeholder="00:00:00"
                   box
-                  ></v-text-field>
-
-                  <v-layout v-if="input.lapTime" row align-center>
-                    <!-- <v-flex> -->
-                      <div v-for="lap in input.lapTime" :key="lap.id">
-                        <v-text-field
-                        :label="lap.num_of_lap*50 + 'm'"
-                        v-model="lap.lap_time"
-                        :num_of_order="input.num_of_order"
-                        mask="time-with-seconds"
-                        outline class="mx-1">
-                        </v-text-field>
-                      </div>
-                    <!-- </v-flex> -->
-                  </v-layout>
-
-                </v-flex>
-              </v-layout>
-
-
-
-              <!-- <v-flex xs6>
-                <v-spacer></v-spacer>
-              </v-flex> -->
-
-
-
-
-
-
-
-            </div>
-            <!-- <v-btn @click="addInput">Add Input</v-btn> -->
-
-          </v-form>
-  </v-layout>
+                  v-validate="'required|min:6'"
+                  :error-messages="errors.collect(`Number${input.num_of_order}`)"
+                  >
+                </v-text-field>
+                <v-layout v-if="input.lapTime" row align-center>
+                  <div v-for="lap in input.lapTime" :key="lap.id">
+                    <v-text-field
+                      :label="lap.num_of_lap*50 + 'm'"
+                      v-model="lap.lap_time"
+                      :num_of_order="input.num_of_order"
+                      mask="time-with-seconds"
+                      placeholder="00:00:00"
+                      outline
+                      class="mx-1"
+                      :name="`Lap${input.num_of_order}-${lap.num_of_lap}`"
+                      v-validate="'required|min:6'"
+                      :error-messages="errors.collect(`Lap${input.num_of_order}-${lap.num_of_lap}`)">
+                    </v-text-field>
+                  </div>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </div>
+          <!-- <v-btn @click="addInput">Add Input</v-btn> -->
+        </v-form>
+      </v-layout>
     </v-card-text>
   </v-card>
 
 
-  <v-btn @click="postAllData" color="success" large>Submit</v-btn>
-
+  <v-btn
+    v-if="$store.state.user.username!='Guest'"
+    @click="postAllData"
+    color="success"
+    large>
+    Submit
+  </v-btn>
+  <v-btn
+    v-else
+    disabled
+    color="success"
+    large>
+    Submit
+  </v-btn>
+  <!-- <ul v-if="errors">
+    <li v-for="error in errors.all()" :key="error">{{ error }}</li>
+  </ul> -->
   <!-- <div v-for="(input, label) in resultTime" :key="label">
       <div>
         {{input.lapTime}}
       </div>
   </div> -->
   <!-- <div v-for="input in lapTime" :key="input.id">{{input}}</div> -->
-  <div>{{info}}</div>
 
 </v-container>
 </template>
@@ -306,7 +310,7 @@ export default {
   components: {
 
   } ,
-  plops: ['TrainingProgram', 'errors', 'info'],
+  plops: ['TrainingProgram', 'postErrors', 'info'],
   data() {
     return {
       date: new Date().toISOString().substr(0, 10),
@@ -326,7 +330,6 @@ export default {
       urlMenuName: process.env.VUE_APP_API_URL_BASE + '/menu_name/',
       url: process.env.VUE_APP_API_URL_BASE + '/datainput/',
       MenuName: null,
-      errors: null,
       val: "00:00:00",
 
       trainingData: {
@@ -372,17 +375,21 @@ export default {
         .then(response => (this.MenuName = response.data.results.map(x => x.menu_name)))
     },
     postAllData: function () {
-      axios
-        .post(this.url, {
-          'trainingData': this.trainingData,
-          'menuData': this.menuData,
-          'resultTime': this.resultTime
+      this.$validator.validate().then(result => {
+        if (result) {
+          axios
+            .post(this.url, {
+              'trainingData': this.trainingData,
+              'menuData': this.menuData,
+              'resultTime': this.resultTime
+            })
+            .then(response => {
+              this.info = response
+              this.$router.push('/')
+            })
+            .catch(error => (this.postErrors = error))
+          }
         })
-        .then(response => {
-          this.info = response
-          this.$router.push('/')
-        })
-        .catch(error => (this.errors = error.response))
     },
 
 
@@ -399,7 +406,7 @@ export default {
           'lap_time': null
         })
       }
-      window.console.log(lapTime)
+      // window.console.log(lapTime)
       return lapTime
     },
 

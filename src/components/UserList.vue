@@ -76,10 +76,11 @@ import axios from 'axios'
 
 export default {
   name: 'UserList',
-  props: ['userlist', 'errors'],
+  props: ['errors'],
   data() {
     return {
-      url: process.env.VUE_APP_API_URL_BASE + '/users/'
+      url: process.env.VUE_APP_API_URL_BASE + '/users/',
+      userlist: null,
     }
   },
   methods: {
@@ -91,9 +92,6 @@ export default {
     },
     getDetail: function(id) {
       this.$router.push(`/userlist/${id}`)
-      // axios
-      //   .get(`http://127.0.0.1:8000/training_program/${id}/`)
-      //   .then(response => (this.info = response.data))
     },
   },
   created() {

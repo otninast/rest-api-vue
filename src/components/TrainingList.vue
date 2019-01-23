@@ -1,5 +1,5 @@
 <template>
-<div>{{error}}
+<div>{{errors}}
   <div v-for="item in items" :key="item.id">
     <v-layout my-5>
       <v-flex xs12 sm6 offset-sm3>
@@ -20,7 +20,7 @@
 
             <v-layout row align-center>
               <v-subheader>Score : </v-subheader>
-              <v-rating v-model="item.self_assessment_score" color="yellow darken-3" background-color="grey darken-1" empty-icon="$vuetify.icons.ratingFull" half-increments readonly=true></v-rating>
+              <v-rating v-model="item.self_assessment_score" color="yellow darken-3" background-color="grey darken-1" empty-icon="$vuetify.icons.ratingFull" half-increments readonly></v-rating>
             </v-layout>
 
 
@@ -115,15 +115,13 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue" @click="getDetail(item.id)">Detail{{item.id}}</v-btn>
-            <v-btn color="red">Update</v-btn>
+            <v-btn color="blue white--text" @click="getDetail(item.id)">Detail</v-btn>
           </v-card-actions>
 
         </v-card>
       </v-flex>
     </v-layout>
   </div>
-  <!-- <h2>{{items}}@@@@@@@@</h2> -->
 </div>
 </template>
 
@@ -133,13 +131,12 @@ axios.defaults.headers.common['Authorization'] = localStorage.token
 
 export default {
   name: 'TrainingList',
-  props: ['items', 'info', 'tmp', 'error'],
+  props: ['info', 'tmp', 'errors'],
   data() {
     return {
-      // url: 'http://127.0.0.1:8000/training_program/',
       url: process.env.VUE_APP_API_URL_BASE + '/training_program/',
-      // storage: localStorage,
       number: null,
+      items: null,
     }
   },
   methods: {
@@ -147,13 +144,10 @@ export default {
       axios
         .get(this.url)
         .then(response => (this.items = response.data.results))
-        .catch(error => (this.items = error))
+        .catch(error => (this.errors = error))
     },
     getDetail: function(id) {
       this.$router.push(`/${id}`)
-      // axios
-      //   .get(`http://127.0.0.1:8000/training_program/${id}/`)
-      //   .then(response => (this.info = response.data))
     },
   },
   created() {

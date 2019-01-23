@@ -13,7 +13,7 @@
 
           <v-list-tile-content>
             <v-list-tile-title v-if="$store.state.user">{{$store.state.user.username}}</v-list-tile-title>
-            <v-list-tile-title v-else>Gest User</v-list-tile-title>
+            <!-- <v-list-tile-title v-else>Gest User</v-list-tile-title> -->
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -58,14 +58,14 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile to="/test">
+      <!-- <v-list-tile to="/test">
         <v-list-tile-action>
           <v-icon>contact_mail</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>Test</v-list-tile-title>
         </v-list-tile-content>
-      </v-list-tile>
+      </v-list-tile> -->
 
     </v-list>
   </v-navigation-drawer>
@@ -121,6 +121,7 @@ export default {
       // window.console.log(this.$store.state)
 
       localStorage.removeItem("token")
+      localStorage.removeItem("swim-record")
       axios.defaults.headers.common['Authorization'] =null
       this.$store.state.user = null
       this.$store.state.profile = null
