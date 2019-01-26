@@ -128,9 +128,10 @@
     </v-card-title>
     <v-card-text>
       <v-form>
-        <v-layout column justify-center>
+        <!-- <v-container> -->
+        <v-layout column wrap justify-center>
 
-            <v-flex xs6>
+            <v-flex xs6 md6 lg6>
               <v-select
                 v-model="menuData.menu_name"
                 :items="MenuName"
@@ -139,7 +140,7 @@
               ></v-select>
             </v-flex>
 
-            <v-flex xs6>
+            <v-flex xs6 md6 lg6>
               <v-select
                 v-model="menuData.style"
                 :items="['Fr', 'Ba', 'Br', 'Fly', 'IM']"
@@ -148,7 +149,7 @@
               ></v-select>
             </v-flex>
 
-            <v-flex xs6>
+            <v-flex xs6 md6 lg6>
               <v-select
                 v-model="menuData.distance"
                 :items="[50, 100, 200, 400, 800]"
@@ -206,7 +207,9 @@
           </v-layout>
 
         </v-layout>
+      <!-- </v-container> -->
       </v-form>
+
     </v-card-text>
   </v-card>
 
@@ -249,21 +252,21 @@
                   :error-messages="errors.collect(`Number${input.num_of_order}`)"
                   >
                 </v-text-field>
-                <v-layout v-if="input.lapTime" row align-center>
-                  <div v-for="lap in input.lapTime" :key="lap.id">
-                    <v-text-field
-                      :label="lap.num_of_lap*50 + 'm'"
-                      v-model="lap.lap_time"
-                      :num_of_order="input.num_of_order"
-                      mask="time-with-seconds"
-                      placeholder="00:00:00"
-                      outline
-                      class="mx-1"
-                      :name="`Lap${input.num_of_order}-${lap.num_of_lap}`"
-                      v-validate="'required|min:6'"
-                      :error-messages="errors.collect(`Lap${input.num_of_order}-${lap.num_of_lap}`)">
-                    </v-text-field>
-                  </div>
+                <v-layout v-if="input.lapTime" wrap>
+                    <v-flex xs4 md3 lg3 v-for="lap in input.lapTime" :key="lap.id">
+                      <v-text-field
+                        :label="lap.num_of_lap*50 + 'm'"
+                        v-model="lap.lap_time"
+                        :num_of_order="input.num_of_order"
+                        mask="time-with-seconds"
+                        placeholder="00:00:00"
+                        outline
+                        class="mx-1"
+                        :name="`Lap${input.num_of_order}-${lap.num_of_lap}`"
+                        v-validate="'required|min:6'"
+                        :error-messages="errors.collect(`Lap${input.num_of_order}-${lap.num_of_lap}`)">
+                      </v-text-field>
+                    </v-flex>
                 </v-layout>
               </v-flex>
             </v-layout>

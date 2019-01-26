@@ -16,12 +16,12 @@
       <v-card-text>
         <div v-for="menu in detailData.training_menu" :key="menu.id">
 
-          <v-layout row align-center justify-center>
+          <v-layout row wrap align-center justify-center>
             <v-flex>
               <v-subheader>Menu Name : </v-subheader>
             </v-flex>
             <v-flex>
-              <code class="title">{{menu.menu_name.menu_name}}</code>
+              <div class="title text-xs-left">{{menu.menu_name.menu_name}}</div>
             </v-flex>
           </v-layout>
 
@@ -31,7 +31,7 @@
               <v-subheader>Style : </v-subheader>
             </v-flex>
             <v-flex>
-              <div class="title text-md-left">{{menu.style}}</div>
+              <div class="title text-xs-left">{{menu.style}}</div>
             </v-flex>
           </v-layout>
 
@@ -40,7 +40,7 @@
               <v-subheader>Menu Detail : </v-subheader>
             </v-flex>
             <v-flex>
-              <div class="text-md-left title">
+              <div class="text-xs-left title">
                 {{menu.distance}}m
                 ×
                 {{menu.how_many_times}}

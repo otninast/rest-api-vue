@@ -1,11 +1,9 @@
 <template>
-<div>{{errors}}
+<div>
   <div v-for="item in items" :key="item.id">
-    <v-layout my-5>
-      <v-flex xs12 sm6 offset-sm3>
+    <v-layout my-5 wrap justify-center>
+      <v-flex xs10 md10 lg8>
         <v-card>
-          <!-- <v-img :src="item.training_image" v-if="item.training_image" aspect-ratio="2.75">
-          </v-img> -->
 
           <v-card-title primary-title class="teal darken-2 white--text">
             <h3>{{item.training_date}}</h3>
@@ -17,100 +15,114 @@
           </v-card-title>
 
           <v-card-text>
+            <v-layout column justify-center>
 
-            <v-layout row align-center>
-              <v-subheader>Score : </v-subheader>
-              <v-rating v-model="item.self_assessment_score" color="yellow darken-3" background-color="grey darken-1" empty-icon="$vuetify.icons.ratingFull" half-increments readonly></v-rating>
-            </v-layout>
+              <v-layout row wrap justify-center align-center>
+                <v-flex xs4 md3 lg3>
+                  <v-subheader>Score : </v-subheader>
+                </v-flex>
+                <v-flex xs8 md6 lg6>
+                  <v-rating
+                    v-model="item.self_assessment_score"
+                    color="yellow darken-3"
+                    background-color="grey darken-1"
+                    empty-icon="$vuetify.icons.ratingFull"
+                    half-increments
+                    readonly>
+                  </v-rating>
+                </v-flex>
+              </v-layout>
 
+              <v-layout row wrap justify-center align-center>
+                <v-flex xs6 md3 lg3>
+                  <v-subheader>Reflection : </v-subheader>
+                </v-flex>
+                <v-flex xs6 md6 lg6>
+                  <div class="text-xs-left">{{ item.daily_reflection }}</div>
+                </v-flex>
+              </v-layout>
 
-            <v-subheader>Reflection : </v-subheader>
-            <div>{{ item.daily_reflection }}</div>
+              <div v-if="item.training_menu">
+                <div v-for="menu in item.training_menu" :key="menu.id">
 
-            <div v-if="item.training_menu">
-              <div v-for="menu in item.training_menu" :key="menu.id">
-
-
-                <v-layout row align-center>
-                  <v-subheader>Menu Name : </v-subheader>
-                  <code>{{menu.menu_name.menu_name}}</code>
-                  <!-- <variables>{{menu.menu_name.menu_name}}</variables> -->
-                  <!-- <div>{{menu.menu_name.menu_name}}</div> -->
-                </v-layout>
-
-
-                <v-layout row align-center>
-                  <v-subheader>Style : </v-subheader>
-                  <div>{{menu.style}}</div>
-                </v-layout>
-
-                <v-layout row align-center>
-                  <v-subheader>Menu Detail : </v-subheader>
-                  <div class="text-md-center">
-                    {{menu.distance}}m
-                    ×
-                    {{menu.how_many_times}}count
-                    -{{menu.time_circle}}"</div>
-                </v-layout>
-
-                <!-- <v-layout row align-center>
-                  <v-subheader>Summary: </v-subheader>
-                  <v-layout column>
-                    <div class="text-md-center">
-                      mean-.-{{menu.mean_time}}sec
-                    </div>
-                    <div class="text-md-center">
-                      max-.-{{menu.max_time}}sec
-                    </div>
-                    <div class="text-md-center">
-                      min-.-{{menu.min_time}}sec
-                    </div>
-                  </v-layout>
-                </v-layout> -->
-
-                <v-layout row align-center>
-                  <v-subheader>Summary: </v-subheader>
-                  <!-- <v-layout column> -->
-                    <!-- <v-flex xs1> -->
-
-                      <v-text-field :value="menu.mean_time + ' sec'" label="mean" box readonly class="title " color="blue-grey lighten-2">
-                      </v-text-field>
-                    <!-- </v-flex> -->
-                    <!-- <v-flex xs1> -->
-                      <v-text-field :value="menu.max_time + ' sec'" label="max" box readonly class="title mx-1">
-                      </v-text-field>
-                    <!-- </v-flex> -->
-                    <!-- <v-flex xs1> -->
-                      <v-text-field :value="menu.min_time + ' sec'" label="min" box readonly class="title">
-                      </v-text-field>
-
-                    <!-- </v-flex> -->
-                  <!-- </v-layout> -->
-                </v-layout>
-
-                <v-layout row align-center>
-                  <v-subheader>graph : </v-subheader>
-
-                  <v-img :src="menu.graph"></v-img>
-
+                  <v-layout row wrap justify-center align-center>
+                    <v-flex xs6 md3 lg3>
+                      <v-subheader>Menu Name : </v-subheader>
+                    </v-flex>
+                    <v-flex xs6 md6 lg6>
+                      <div class="text-xs-left">{{menu.menu_name.menu_name}}</div>
+                    </v-flex>
                   </v-layout>
 
-                <!-- <v-layout row align-center>
-                  <v-subheader>Time : </v-subheader>
-                  <v-layout column>
-                    <div v-for="time in menu.result_time" :key="time.id">
-                      <div class="text-md-center">
-                        No.{{time.num_of_order}}
-                      -.-.->>
-                        {{time.result_time}}sec</div>
-                    </div>
+                  <v-layout row wrap justify-center align-center>
+                    <v-flex xs6 md3 lg3>
+                      <v-subheader>Style : </v-subheader>
+                    </v-flex>
+                    <v-flex xs6 md6 lg6>
+                      <div class="text-xs-left">{{menu.style}}</div>
+                    </v-flex>
                   </v-layout>
-                </v-layout> -->
 
-                <hr>
-                <!-- <strong>{{ menu }}</strong> -->
+                  <v-layout row wrap justify-center align-center>
+                    <v-flex xs6 md3 lg3>
+                      <v-subheader>Menu Detail : </v-subheader>
+                    </v-flex>
+                    <v-flex xs6 md6 lg6>
+                      <div class="text-xs-center">
+                        {{menu.distance}}m × {{menu.how_many_times}}count -{{menu.time_circle}}"
+                      </div>
+                    </v-flex>
+                  </v-layout>
+
+                  <v-layout row wrap justify-center align-center>
+                    <v-flex xs12 md3 lg3>
+                      <v-subheader>Summary: </v-subheader>
+                    </v-flex>
+                    <!-- <v-layout xs12 md9 lg9 row justify-center> -->
+                      <v-flex xs4 md3 lg3>
+                        <v-text-field
+                          :value="menu.mean_time + ' sec'"
+                          label="mean"
+                          box
+                          readonly
+                          class="title "
+                          color="blue-grey lighten-2">
+                        </v-text-field>
+                      </v-flex>
+                      <v-flex xs4 md3 lg3>
+                        <v-text-field
+                          :value="menu.max_time + ' sec'"
+                          label="max"
+                          box
+                          readonly
+                          class="title mx-1">
+                        </v-text-field>
+                      </v-flex>
+                      <v-flex xs4 md3 lg3>
+                        <v-text-field
+                          :value="menu.min_time + ' sec'"
+                          label="min"
+                          box
+                          readonly
+                          class="title">
+                        </v-text-field>
+                      </v-flex>
+                    <!-- </v-layout> -->
+                  </v-layout>
+
+                  <v-layout row wrap justify-center align-center>
+                    <v-flex xs12 md12 lg2>
+                      <v-subheader>graph : </v-subheader>
+                    </v-flex>
+                    <v-flex xs12 md12 lg10>
+                      <v-img :src="menu.graph"></v-img>
+                    </v-flex>
+                  </v-layout>
+
+                  <hr>
+                </div>
               </div>
-            </div>
+            </v-layout>
           </v-card-text>
 
           <v-card-actions>
