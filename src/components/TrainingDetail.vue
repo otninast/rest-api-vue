@@ -2,12 +2,11 @@
 <div>
   <v-container>
 
-    <v-alert type="error">
+    <!-- <v-alert type="error">
       {{errors}}
-    </v-alert>
+    </v-alert> -->
 
     <v-card>
-
       <v-card-title primary-title class="indigo white--text">
         <h1>{{detailData.training_date}}</h1>
         <v-spacer></v-spacer>
@@ -17,105 +16,66 @@
       <v-card-text>
         <div v-for="menu in detailData.training_menu" :key="menu.id">
 
-          <v-layout row align-center justify-center>
-            <v-flex xs3>
+          <v-layout row wrap align-center justify-center>
+            <v-flex>
               <v-subheader>Menu Name : </v-subheader>
             </v-flex>
-            <v-flex xs3>
-              <code class="title">{{menu.menu_name.menu_name}}</code>
+            <v-flex>
+              <div class="title text-xs-left">{{menu.menu_name.menu_name}}</div>
             </v-flex>
           </v-layout>
 
 
           <v-layout row align-center justify-center>
-            <v-flex xs3>
+            <v-flex>
               <v-subheader>Style : </v-subheader>
             </v-flex>
-            <v-flex xs3>
-              <div class="title text-md-left">{{menu.style}}</div>
+            <v-flex>
+              <div class="title text-xs-left">{{menu.style}}</div>
             </v-flex>
           </v-layout>
 
           <v-layout row align-center justify-center>
-            <v-flex xs3>
+            <v-flex>
               <v-subheader>Menu Detail : </v-subheader>
             </v-flex>
-            <v-flex xs3>
-              <div class="text-md-left title">
+            <v-flex>
+              <div class="text-xs-left title">
                 {{menu.distance}}m
                 ×
                 {{menu.how_many_times}}
-                  -{{menu.time_circle}}"</div>
+                -{{menu.time_circle}}"</div>
             </v-flex>
           </v-layout>
 
-          <!-- <v-layout row align-center justify-center>
-            <v-flex xs3>
-              <v-subheader>Time abs: </v-subheader>
+
+
+          <v-layout row justify-center my-3>
+            <v-flex mx-1 md2>
+              <v-text-field :value="menu.mean_time + ' sec'" label="mean" outline color="blue-grey lighten-2" readonly class="title">
+              </v-text-field>
             </v-flex>
-            <v-flex xs3>
-              <v-layout column>
-                <div class="text-md-center">
-                  mean..{{menu.mean_time}}sec
-                </div>
-                <div class="text-md-center">
-                  max..{{menu.max_time}}sec
-                </div>
-                <div class="text-md-center">
-                  min..{{menu.min_time}}sec
-                </div>
-              </v-layout>
+            <v-flex mx-1 md2>
+              <v-text-field :value="menu.max_time + ' sec'" label="max" outline color="blue-grey lighten-2" readonly class="title">
+              </v-text-field>
             </v-flex>
-          </v-layout> -->
+            <v-flex mx-1 md2>
+              <v-text-field :value="menu.min_time + ' sec'" label="min" outline color="blue-grey lighten-2" readonly class="title">
+              </v-text-field>
+            </v-flex>
+          </v-layout>
 
-
-
-              <v-layout row justify-center my-3>
-                <v-flex xs2 mx-1>
-                  <v-text-field :value="menu.mean_time + ' sec'" label="mean" outline color="blue-grey lighten-2" readonly class="title">
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs2 mx-1>
-                  <v-text-field :value="menu.max_time + ' sec'" label="max" outline color="blue-grey lighten-2" readonly class="title">
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs2 mx-1>
-                  <v-text-field :value="menu.min_time + ' sec'" label="min" outline color="blue-grey lighten-2" readonly class="title">
-                  </v-text-field>
-                </v-flex>
-              </v-layout>
-
-
-
-
-
-          <v-layout row justify-center align-center>
+          <v-layout column>
+            <v-flex>
               <v-subheader>graph : </v-subheader>
+            </v-flex>
+            <v-flex>
               <v-img :src="menu.graph"></v-img>
+            </v-flex>
           </v-layout>
-
-          <!-- <v-layout row align-center justify-center>
-            <v-flex xs3>
-              <v-subheader>Time : </v-subheader>
-            </v-flex>
-            <v-flex xs3>
-              <v-layout column>
-                <div v-for="time in menu.result_time" :key="time.id">
-                  <div class="text-md-center">
-                    No.{{time.num_of_order}}
-                    ......>>
-                    {{time.result_time}}sec</div>
-                </div>
-              </v-layout>
-            </v-flex>
-          </v-layout> -->
 
           <v-layout align-center justify-center my-3>
-            <v-data-table
-            :headers="headers"
-            :items="menu.result_time"
-            class="elevation-1"
-            >
+            <v-data-table :headers="headers" :items="menu.result_time" class="elevation-1">
               <template slot="items" slot-scope="row">
                 <tr @click="row.expanded = !row.expanded">
                   <td class="text-xs-left">{{row.item.num_of_order}}</td>
@@ -146,7 +106,24 @@
         <div v-if="$store.state.user">
           <div v-if="$store.state.user.username == detailData.username.username">
             <v-btn color="success" class="mx-1">update</v-btn>
-            <v-btn color="error">delete</v-btn>
+            <v-dialog v-model="dialog" width="500">
+              <v-btn color="error" slot="activator">delete</v-btn>
+              <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>
+
+                </v-card-title>
+                <v-card-text>
+                  <h2>Delete OK?</h2>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-flex justify-center>
+                    <v-btn class="red white--text" @click="deletePost">Delete</v-btn>
+                    <v-btn class="gray" @click="dialog = false">cansel</v-btn>
+                  </v-flex>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </div>
           <span v-else></span>
         </div>
@@ -158,24 +135,16 @@
 
 <script>
 import axios from 'axios'
-// import DataTable from './construction/DataTable.vue'
-
-// let data = null
 
 export default {
   name: "TrainingDetail",
-  components: {
-    // DataTable,
-  },
   props: ['detailData'],
   data() {
     return {
-      url: `http://127.0.0.1:8000/training_program/${this.$route.params.id}/`,
+      url: `${process.env.VUE_APP_API_URL_BASE}/training_program/${this.$route.params.id}/`,
       errors: null,
-      // detailData: null,
-
-      headers: [
-        {
+      dialog: false,
+      headers: [{
           text: 'Order',
           value: 'num_of_order',
         },
@@ -184,7 +153,6 @@ export default {
           value: 'result_time'
         },
       ],
-
     }
   },
   methods: {
@@ -193,21 +161,21 @@ export default {
         .get(this.url)
         .then(response => {
           this.detailData = response.data
-
         })
         .catch(error => (this.errors = error))
     },
+    deletePost: function () {
+      axios
+        .delete(this.url)
+        .then(response => {
+          this.detailData = response.data
+          this.$router.push('/')
+        })
+        .catch(error => (this.errors = error))
+    }
   },
   mounted() {
     this.getDetailDate()
   },
-  // computed: {
-  //   returnData: function () {
-  //     let mean_time
-  //     mean_time = this.detailData.training_menu.mean_time
-  //     return mean_time
-  //   }
-  // }
-
 }
 </script>
