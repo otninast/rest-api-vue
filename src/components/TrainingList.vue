@@ -1,7 +1,7 @@
 <template>
 <div>
-  <div v-for="item in items" :key="item.id">
-    <v-layout my-5 wrap justify-center>
+  <div v-for="item in items" :key="item.id" >
+    <v-layout my-5 wrap justify-center v-if="!loading">
       <v-flex xs10 md10 lg8>
         <v-card>
 
@@ -134,6 +134,27 @@
       </v-flex>
     </v-layout>
   </div>
+  <div class="text-xs-center" v-if="loading">
+    <v-progress-circular
+      :size="80"
+      color="primary"
+      indeterminate
+    ></v-progress-circular>
+  </div>
+  <div class="text-xs-center my-4">
+    <v-pagination
+      v-model="page"
+      @input="getList(firstUrl + '?page=' + page)"
+      @next="next()"
+      @previous="previous()"
+      :length="Math.ceil(count/5)"
+      :total-visible="7"
+    ></v-pagination>
+    <!-- <p>{{page}}</p>
+    <p class="title"><code>next</code>:{{nextPage}}</p>
+    <p class="title"><code>pre</code>:{{previousPage}}</p>
+    <h3>{{text}}</h3> -->
+  </div>
 </div>
 </template>
 
@@ -143,27 +164,57 @@ axios.defaults.headers.common['Authorization'] = localStorage.token
 
 export default {
   name: 'TrainingList',
-  props: ['info', 'tmp', 'errors'],
+  props: ['info', 'tmp'],
   data() {
     return {
-      url: process.env.VUE_APP_API_URL_BASE + '/training_program/',
+      errors: null,
+      loading: false,
+      // text: 'start',
+      firstUrl: process.env.VUE_APP_API_URL_BASE + '/training_program/',
+      page: 1,
       number: null,
       items: null,
+      count: null,
+      nextPage: null,
+      previousPage: null,
     }
   },
   methods: {
-    getList: function() {
+    getList: function(url) {
+      this.loading = true
       axios
-        .get(this.url)
-        .then(response => (this.items = response.data.results))
+        .get(url)
+        .then(response => {
+          this.items = response.data.results
+          this.count = response.data.count
+          this.nextPage = response.data.next
+          this.previousPage = response.data.previous
+          this.loading = false
+        })
         .catch(error => (this.errors = error))
     },
     getDetail: function(id) {
       this.$router.push(`/${id}`)
     },
+    next: function () {
+      this.loading = true
+      // this.text = "next"
+      this.getList(this.nextPage)
+    },
+    previous: function () {
+      this.loading = true
+      // this.text = "pre"
+      this.getList(this.previousPage)
+    }
   },
   created() {
-    this.getList()
+    this.loading = true
+    this.getList(this.firstUrl)
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .v-progress-circular
+    margin: 1rem
+</style>
