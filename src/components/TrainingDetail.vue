@@ -1,136 +1,165 @@
 <template>
-<div>
   <v-container>
+    <v-layout>
+      <v-card>
+        <v-card-title primary-title class="indigo white--text">
+          <h1>{{detailData.training_date}}</h1>
+          <v-spacer></v-spacer>
+          <h1>{{detailData.username.username}}</h1>
+        </v-card-title>
 
-    <!-- <v-alert type="error">
-      {{errors}}
-    </v-alert> -->
+        <v-card-text>
+          <v-layout column wrap justify-center v-for="menu in detailData.training_menu" :key="menu.id">
 
-    <v-card>
-      <v-card-title primary-title class="indigo white--text">
-        <h1>{{detailData.training_date}}</h1>
-        <v-spacer></v-spacer>
-        <h1>{{detailData.username.username}}</h1>
-      </v-card-title>
+            <v-layout row wrap>
+              <v-flex xs12 m12 lg6>
+                <!-- <v-card> -->
+                  <v-layout row wrap align-center justify-center>
+                    <v-flex lg3>
+                      <v-subheader>Menu Name : </v-subheader>
+                    </v-flex>
+                    <v-flex>
+                      <div class="title text-xs-left">{{menu.menu_name.menu_name}}</div>
+                    </v-flex>
+                  </v-layout>
 
-      <v-card-text>
-        <div v-for="menu in detailData.training_menu" :key="menu.id">
+                  <v-layout row align-center justify-center>
+                    <v-flex lg3>
+                      <v-subheader>Style : </v-subheader>
+                    </v-flex>
+                    <v-flex>
+                      <div class="title text-xs-left">{{menu.style}}</div>
+                    </v-flex>
+                  </v-layout>
 
-          <v-layout row wrap align-center justify-center>
-            <v-flex>
-              <v-subheader>Menu Name : </v-subheader>
-            </v-flex>
-            <v-flex>
-              <div class="title text-xs-left">{{menu.menu_name.menu_name}}</div>
-            </v-flex>
-          </v-layout>
+                  <v-layout row align-center justify-center>
+                    <v-flex lg3>
+                      <v-subheader>Menu Detail : </v-subheader>
+                    </v-flex>
+                    <v-flex>
+                      <div class="text-xs-left title">
+                        {{menu.distance}}m
+                        ×
+                        {{menu.how_many_times}}
+                        -{{menu.time_circle}}"</div>
+                    </v-flex>
+                  </v-layout>
 
+                  <v-layout row justify-center my-3>
+                    <v-flex mx-1>
+                      <v-text-field :value="menu.mean_time + ' sec'" label="mean" outline color="blue-grey lighten-2" readonly class="title">
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex mx-1>
+                      <v-text-field :value="menu.max_time + ' sec'" label="max" outline color="blue-grey lighten-2" readonly class="title">
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex mx-1>
+                      <v-text-field :value="menu.min_time + ' sec'" label="min" outline color="blue-grey lighten-2" readonly class="title">
+                      </v-text-field>
+                    </v-flex>
+                  </v-layout>
 
-          <v-layout row align-center justify-center>
-            <v-flex>
-              <v-subheader>Style : </v-subheader>
-            </v-flex>
-            <v-flex>
-              <div class="title text-xs-left">{{menu.style}}</div>
-            </v-flex>
-          </v-layout>
+                  <v-layout row wrap align-center>
+                    <v-flex lg3>
+                      <v-subheader>Reflection : </v-subheader>
+                    </v-flex>
+                    <v-flex>
+                      <div class="text-xs-left text">{{detailData.daily_reflection}}</div>
+                    </v-flex>
+                  </v-layout>
+                <!-- </v-card> -->
+              </v-flex>
 
-          <v-layout row align-center justify-center>
-            <v-flex>
-              <v-subheader>Menu Detail : </v-subheader>
-            </v-flex>
-            <v-flex>
-              <div class="text-xs-left title">
-                {{menu.distance}}m
-                ×
-                {{menu.how_many_times}}
-                -{{menu.time_circle}}"</div>
-            </v-flex>
-          </v-layout>
-
-
-
-          <v-layout row justify-center my-3>
-            <v-flex mx-1 md2>
-              <v-text-field :value="menu.mean_time + ' sec'" label="mean" outline color="blue-grey lighten-2" readonly class="title">
-              </v-text-field>
-            </v-flex>
-            <v-flex mx-1 md2>
-              <v-text-field :value="menu.max_time + ' sec'" label="max" outline color="blue-grey lighten-2" readonly class="title">
-              </v-text-field>
-            </v-flex>
-            <v-flex mx-1 md2>
-              <v-text-field :value="menu.min_time + ' sec'" label="min" outline color="blue-grey lighten-2" readonly class="title">
-              </v-text-field>
-            </v-flex>
-          </v-layout>
-
-          <v-layout column>
-            <v-flex>
-              <v-subheader>graph : </v-subheader>
-            </v-flex>
-            <v-flex>
-              <v-img :src="menu.graph"></v-img>
-            </v-flex>
-          </v-layout>
-
-          <v-layout align-center justify-center my-3>
-            <v-data-table :headers="headers" :items="menu.result_time" class="elevation-1">
-              <template slot="items" slot-scope="row">
-                <tr @click="row.expanded = !row.expanded">
-                  <td class="text-xs-left">{{row.item.num_of_order}}</td>
-                  <td>{{row.item.result_time}}</td>
-                </tr>
-              </template>
-              <template slot="expand" slot-scope="row">
-                <v-card flat>
-                  <v-card-text>
-                    <v-layout row align-center justify-center>
-                      <div v-for="lap in row.item.lap_time" :key="lap.id">
-                        <div class="mx-3">{{lap.lap_time}}</div>
-                      </div>
-                    </v-layout>
-                  </v-card-text>
-                </v-card>
-              </template>
-            </v-data-table>
-          </v-layout>
-
-          <hr>
-          <!-- <strong>{{ menu }}</strong> -->
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn to="/" color="info">back</v-btn>
-        <v-spacer></v-spacer>
-        <div v-if="$store.state.user">
-          <div v-if="$store.state.user.username == detailData.username.username">
-            <v-btn color="success" class="mx-1">update</v-btn>
-            <v-dialog v-model="dialog" width="500">
-              <v-btn color="error" slot="activator">delete</v-btn>
-              <v-card>
-                <v-card-title class="headline grey lighten-2" primary-title>
-
-                </v-card-title>
-                <v-card-text>
-                  <h2>Delete OK?</h2>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-flex justify-center>
-                    <v-btn class="red white--text" @click="deletePost">Delete</v-btn>
-                    <v-btn class="gray" @click="dialog = false">cansel</v-btn>
+              <v-flex xs12 m12 lg6 pl-2>
+                <!-- <v-card> -->
+                  <v-layout column my-3>
+                  <v-flex lg12>
+                    <v-subheader>Data Table : </v-subheader>
                   </v-flex>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+                  <v-flex>
+                    <v-data-table :headers="headers" :items="menu.result_time" class="elevation-1">
+                      <template slot="items" slot-scope="row">
+                        <tr @click="row.expanded = !row.expanded">
+                          <td class="text-xs-left">{{row.item.num_of_order}}</td>
+                          <td>{{row.item.result_time}}</td>
+                        </tr>
+                      </template>
+                      <template slot="expand" slot-scope="row">
+                        <v-card flat>
+                          <v-card-text>
+                            <v-layout row wrap>
+                              <v-flex>
+                                <v-subheader>Lap Time</v-subheader>
+                              </v-flex>
+
+                              <v-flex v-for="lap in row.item.lap_time" :key="lap.id"  md3 lg3>
+                                <div class="mx-1" >
+                                  <code>{{lap.num_of_lap}}</code>
+                                  <div>{{lap.lap_time}}</div>
+                                  <code>sec</code>
+                                </div>
+                              </v-flex>
+
+                            </v-layout>
+                          </v-card-text>
+                        </v-card>
+                      </template>
+                    </v-data-table>
+                  </v-flex>
+                  </v-layout>
+                <!-- </v-card> -->
+              </v-flex>
+            </v-layout>
+
+            <v-layout row wrap>
+              <v-flex my-1>
+                <v-card>
+                  <v-layout column>
+                    <v-flex lg12>
+                      <v-subheader>graph : </v-subheader>
+                    </v-flex>
+                    <v-flex lg12>
+                      <img :src="menu.graph" class="flex"/>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+          </v-layout>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn to="/" color="info">back</v-btn>
+          <v-spacer></v-spacer>
+          <div v-if="$store.state.user">
+            <div v-if="$store.state.user.username == detailData.username.username">
+              <v-btn color="success" class="mx-1">update</v-btn>
+              <v-dialog v-model="dialog" width="500">
+                <v-btn color="error" slot="activator">delete</v-btn>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>
+
+                  </v-card-title>
+                  <v-card-text>
+                    <h2>Delete OK?</h2>
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-flex justify-center>
+                      <v-btn class="red white--text" @click="deletePost">Delete</v-btn>
+                      <v-btn class="gray" @click="dialog = false">cansel</v-btn>
+                    </v-flex>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+            <span v-else></span>
           </div>
-          <span v-else></span>
-        </div>
-      </v-card-actions>
-    </v-card>
+        </v-card-actions>
+      </v-card>
+    </v-layout>
   </v-container>
-</div>
 </template>
 
 <script>
@@ -144,6 +173,7 @@ export default {
       url: `${process.env.VUE_APP_API_URL_BASE}/training_program/${this.$route.params.id}/`,
       errors: null,
       dialog: false,
+      dialog_img: false,
       headers: [{
           text: 'Order',
           value: 'num_of_order',

@@ -1,8 +1,8 @@
 <template>
-<div>
-  <div v-for="item in items" :key="item.id" >
-    <v-layout my-5 wrap justify-center v-if="!loading">
-      <v-flex xs10 md10 lg8>
+<v-container>
+  <!-- <div v-for="item in items" :key="item.id" > -->
+    <v-layout wrap justify-center v-if="!loading" >
+      <v-flex xs10 md8 lg7 mx-1 my-2 v-for="item in items" :key="item.id">
         <v-card>
 
           <v-card-title primary-title class="teal darken-2 white--text">
@@ -37,8 +37,18 @@
                 <v-flex xs6 md3 lg3>
                   <v-subheader>Reflection : </v-subheader>
                 </v-flex>
-                <v-flex xs6 md6 lg6>
-                  <div class="text-xs-left">{{ item.daily_reflection }}</div>
+                <v-flex xs10 md6 lg6>
+                  <!-- <v-expansion-panel popout>
+                    <v-expansion-panel-content>
+                      <div slot="header">{{item.daily_reflection.slice(0, 40)}}</div> -->
+                        <!-- <v-card>
+                          <v-card-text> -->
+                            <div class="text-xs-left text">{{item.daily_reflection.slice(0, 200)}}....</div>
+                          <!-- </v-card-text> -->
+                        <!-- <div class="text-xs-left">{{ item.daily_reflection }}</div> -->
+                        <!-- </v-card> -->
+                      <!-- </v-expansion-panel-content>
+                    </v-expansion-panel> -->
                 </v-flex>
               </v-layout>
 
@@ -68,17 +78,17 @@
                       <v-subheader>Menu Detail : </v-subheader>
                     </v-flex>
                     <v-flex xs6 md6 lg6>
-                      <div class="text-xs-center">
+                      <div class="text-xs-left">
                         {{menu.distance}}m × {{menu.how_many_times}}count -{{menu.time_circle}}"
                       </div>
                     </v-flex>
                   </v-layout>
 
-                  <v-layout row wrap justify-center align-center>
+                  <!-- <v-layout row wrap justify-center align-center>
                     <v-flex xs12 md3 lg3>
                       <v-subheader>Summary: </v-subheader>
                     </v-flex>
-                    <!-- <v-layout xs12 md9 lg9 row justify-center> -->
+
                       <v-flex xs4 md3 lg3>
                         <v-text-field
                           :value="menu.mean_time + ' sec'"
@@ -107,8 +117,8 @@
                           class="title">
                         </v-text-field>
                       </v-flex>
-                    <!-- </v-layout> -->
-                  </v-layout>
+
+                  </v-layout> -->
 
                   <v-layout row wrap justify-center align-center>
                     <v-flex xs12 md12 lg2>
@@ -133,7 +143,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-  </div>
+  <!-- </div> -->
   <div class="text-xs-center" v-if="loading">
     <v-progress-circular
       :size="80"
@@ -155,7 +165,7 @@
     <p class="title"><code>pre</code>:{{previousPage}}</p>
     <h3>{{text}}</h3> -->
   </div>
-</div>
+</v-container>
 </template>
 
 <script>
@@ -217,4 +227,13 @@ export default {
 <style lang="stylus" scoped>
   .v-progress-circular
     margin: 1rem
+</style>
+
+<style>
+.text{
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #333333;
+  border-radius: 10px;
+}
 </style>
