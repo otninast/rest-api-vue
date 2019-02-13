@@ -9,6 +9,8 @@ import TrainingDetail from './components/TrainingDetail'
 import Test from './components/test'
 import Profile from './components/Profile'
 import UserList from './components/UserList.vue'
+import Message from './components/Message'
+import SearchData from './components/SearchData'
 
 
 Vue.use(Router)
@@ -43,6 +45,18 @@ const router = new Router({
       path: '/userlist',
       name: 'UserList',
       component: UserList,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/message',
+      name: 'Message',
+      component: Message,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/searchdata',
+      name: 'SearchData',
+      component: SearchData,
       meta: { requiresAuth: true }
     },
     {

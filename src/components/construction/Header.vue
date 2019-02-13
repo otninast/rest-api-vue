@@ -7,12 +7,15 @@
       <v-list class="pa-0">
         <v-list-tile avatar>
           <v-list-tile-avatar>
-            <img :src="baseUrl + $store.state.profile.profile_image" v-if="$store.state.profile" />
+            <img
+             :src="baseUrl + $store.state.profile.profile_image"
+             v-if="$store.state.profile"
+             class="elevation-6"/>
             <img v-else />
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title v-if="$store.state.user">{{$store.state.user.username}}</v-list-tile-title>
+            <v-list-tile-title v-if="$store.state.user" class="title">{{$store.state.user.username}}</v-list-tile-title>
             <!-- <v-list-tile-title v-else>Gest User</v-list-tile-title> -->
           </v-list-tile-content>
         </v-list-tile>
@@ -21,13 +24,14 @@
 
     <v-list dense>
       <!-- <v-divider></v-divider> -->
+      <v-subheader>Menu</v-subheader>
 
       <v-list-tile to="/">
         <v-list-tile-action>
           <v-icon>home</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>home</v-list-tile-title>
+          <v-list-tile-title class="subheading">home</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
 
@@ -36,16 +40,16 @@
           <v-icon>account_circle</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Profile</v-list-tile-title>
+          <v-list-tile-title class="subheading">Profile</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
 
       <v-list-tile to="/userlist">
         <v-list-tile-action>
-          <v-icon>account_circle</v-icon>
+          <v-icon>people</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>User List</v-list-tile-title>
+          <v-list-tile-title class="subheading">User List</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
 
@@ -54,7 +58,36 @@
           <v-icon>note_add</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Input</v-list-tile-title>
+          <v-list-tile-title class="subheading">Input</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile to="/searchdata">
+        <v-list-tile-action>
+          <v-icon>search</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title class="subheading">search data</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile to="/message">
+        <v-list-tile-action>
+          <v-icon>email</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title class="subheading">send message</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-divider></v-divider>
+
+      <v-list-tile to="">
+        <v-list-tile-action>
+          <v-icon>build</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title class="subheading">courch only</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
 

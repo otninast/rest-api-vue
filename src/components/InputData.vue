@@ -44,10 +44,14 @@
         </v-layout>
           <v-layout>
             <v-textarea
-            v-model="trainingData.daily_reflection"
-            placeholder="Please fill in what you thought, such as practice impressions and reflection points."
-            outline>
-          </v-textarea>
+              v-model="trainingData.daily_reflection"
+              placeholder="Please fill in what you thought, such as practice impressions and reflection points."
+              outline
+              auto-grow
+              name="reflection"
+              v-validate="'max:1000'"
+              :error-messages="errors.collect('reflection')">
+            </v-textarea>
           </v-layout>
 
         <v-layout row align-center my-2>
@@ -86,9 +90,8 @@
               :file-size-limit="2097152"
               accept="image/*"
               @file-type-mismatch="handleCroppaFileTypeMismatch"
-              @file-size-exceed="alert('file size exceeds')"
-              >
-            ></croppa>
+              @file-size-exceed="alert('file size exceeds')">
+            </croppa>
           </v-card-text>
           <v-card-actions>
             <v-layout justify-center>
@@ -276,6 +279,10 @@
       </v-layout>
     </v-card-text>
   </v-card>
+
+    <v-btn to="/" color="grey white--text">back</v-btn>
+
+
 
 
   <v-btn

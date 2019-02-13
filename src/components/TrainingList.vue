@@ -2,7 +2,7 @@
 <v-container>
   <!-- <div v-for="item in items" :key="item.id" > -->
     <v-layout wrap justify-center v-if="!loading" >
-      <v-flex xs10 md8 lg7 mx-1 my-2 v-for="item in items" :key="item.id">
+      <v-flex xs12 md8 lg8 mx-1 my-2 v-for="item in items" :key="item.id">
         <v-card>
 
           <v-card-title primary-title class="teal darken-2 white--text">
@@ -10,7 +10,7 @@
             <v-spacer></v-spacer>
               <h3 class="mr-2">{{item.username.username}}</h3>
             <v-avatar size="60" color="grey">
-              <img :src="item.username.profile.profile_image">
+              <img :src="item.username.profile.profile_image" class="elevation-6">
             </v-avatar>
           </v-card-title>
 
